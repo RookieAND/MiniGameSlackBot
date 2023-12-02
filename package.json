@@ -4,7 +4,7 @@
   "description": "NodeJS 기반으로 Slack Bot 을 제작해보고, 간단한 게임을 진행하도록 합니다.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec ts-node --files ./src/index.ts"
+    "start": "nodemon --exec ts-node -r tsconfig-paths/register --files ./src/index.ts"
   },
   "keywords": [
     "NodeJS",
@@ -22,6 +22,7 @@
     "nodemon": "3.0.2",
     "prettier": "2.8.8",
     "ts-node": "10.9.1",
+    "tsconfig-paths": "4.2.0",
     "typescript": "5.1.3"
   }
 }
