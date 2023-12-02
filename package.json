@@ -1,0 +1,25 @@
+{
+  "name": "mini-game-slack-bot",
+  "version": "1.0.0",
+  "description": "NodeJS 기반으로 Slack Bot 을 제작해보고, 간단한 게임을 진행하도록 합니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NodeJS",
+    "Slack",
+    "OpenAI"
+  ],
+  "author": "RookieAND (gwangin1999@naver.com)",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "3.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.3.1",
+    "dotenv": "16.3.1",
+    "prettier": "2.8.8",
+    "typescript": "5.1.3"
+  }
+}
