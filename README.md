@@ -1,2 +1,9 @@
-# MiniGameSlackBot
-NodeJS 기반으로 Slack Bot 을 제작해보고, 간단한 게임을 진행하도록 합니다.
+# RookieVoteSlackBot
+
+> 슬랙 Vote 봇은 너무 사용성이 구려! 예쁘게 꾸며서 내것처럼 만들어보자!
+
+## Introduction
+
+
+## Architecture
+
