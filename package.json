@@ -14,7 +14,8 @@
   "author": "RookieAND (gwangin1999@naver.com)",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "3.16.0"
+    "@slack/bolt": "3.16.0",
+    "mongoose": "8.0.3"
   },
   "devDependencies": {
     "@types/node": "20.3.1",
