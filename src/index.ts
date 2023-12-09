@@ -1,7 +1,11 @@
 import { App } from '@slack/bolt';
 import dotenv from 'dotenv';
 
-import { handleAddSelectOption, handleRemoveSelectOption } from '@/action';
+import {
+    handleAddSelectOption,
+    handleRemoveSelectOption,
+    handleSubmitVoteModal,
+} from '@/action';
 import { registerVoteShortCut } from '@/command';
 import { connectMongoDB } from '@/database/connection';
 
@@ -19,6 +23,7 @@ export const slackBotApp = new App({
 const bootstrapSlackBot = async () => {
     handleAddSelectOption();
     handleRemoveSelectOption();
+    handleSubmitVoteModal();
     registerVoteShortCut();
 };
 

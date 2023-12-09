@@ -2,8 +2,8 @@ import { FilterQuery, ProjectionType, QueryOptions } from 'mongoose';
 import { type VoteType } from './schema';
 import db from './schema';
 
-const create = ({ title, description, options, dueDate }: VoteType) =>
-    db.create({ title, description, options, dueDate });
+const create = ({ title, userId, options, dueDate }: VoteType) =>
+    db.create({ title, userId, options, dueDate });
 
 const findOne = (
     query: FilterQuery<VoteType>,

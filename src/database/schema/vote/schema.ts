@@ -22,10 +22,6 @@ export interface VoteType {
      */
     title: string;
     /**
-     * 투표 설명글
-     */
-    description: string;
-    /**
      * 투표 선택지 목록
      */
     options: VoteOptionType[];
@@ -33,14 +29,18 @@ export interface VoteType {
      * 투표 마감일
      */
     dueDate: Date;
+    /**
+     * 투표 생성 유저 id
+     */
+    userId: string;
 }
 
 const schema = new Schema<VoteType>(
     {
         title: { type: String, required: true },
-        description: { type: String },
         options: { type: [VoteOptionSchema], required: true },
         dueDate: { type: Date, required: true },
+        userId: { type: String, required: true },
     },
     {
         collection: 'votes',
