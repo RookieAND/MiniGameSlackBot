@@ -1,5 +1,5 @@
 import { slackBotApp } from '@/app';
-import { createVoteModal } from '@/modal';
+import { createVoteModal } from '@/block';
 
 /**
  * 투표 생성 ShortCut 을 생성하는 함수 registerVoteShortCut
@@ -14,6 +14,7 @@ export const registerVoteShortCut = () => {
                     trigger_id: body.trigger_id,
                     view: createVoteModal(),
                 });
+                logger.info(result);
             } catch (error) {
                 logger.error(error);
             }

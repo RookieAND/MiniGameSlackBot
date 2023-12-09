@@ -1,12 +1,74 @@
-import { View, KnownBlock } from '@slack/bolt';
+import { View, KnownBlock, Block } from '@slack/bolt';
+
+/**
+ * 투표글 생성 완료 알림 내용을 담은 Block 을 생성하는 함수 createCompletionBlock
+ * @param param.selectOptions 사용자가 기입한 선택지 목록
+ * @param param.title 사용자가 기입한 제목
+ * @param param.dueDateSecond 사용자가 설정한 종료 일자 시간 (epoch time)
+ * @returns 생성된 투표글 생성 완료 메세지 블럭
+ */
+export const createCompletionBlock = ({
+    title,
+    dueDateSecond,
+    selectOptions,
+}: {
+    title: string;
+    dueDateSecond: number;
+    selectOptions: string[];
+}): KnownBlock[] => [
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: '📥 새로운 *투표글* 생성을 완료했습니다!',
+        },
+    },
+    {
+        type: 'divider',
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `📋 *투표 주제* : ${title}`,
+        },
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `📆 *마감 기한* : ${new Date(dueDateSecond * 1000)
+                .toISOString()
+                .match(/(\d{4}년 \d{2}월 \d{2}일) (\d{2}시 \d{2}분)/)}`,
+        },
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: '🗳 *선택 항목* :',
+        },
+        fields: selectOptions.map((option, index) => ({
+            type: 'plain_text',
+            text: `📌 ${index + 1}. ${option}`,
+            emoji: true,
+        })),
+    },
+];
 
 /**
  * 사용자가 입력한 선택지를 기반으로 Block 을 생성하는 createSelectionBlock
- * @param {string} selectOption 선택지
- * @param {number} index 선택지 인덱스
+ * @param {string} param.selectOption 선택지
+ * @param {number} param.index 선택지 인덱스
  * @returns {KnownBlock} 생성된 선택지 Block
  */
-const createSelectionBlock = (selectOption: string, index: number): KnownBlock => ({
+const createSelectionBlock = ({
+    selectOption,
+    index,
+}: {
+    selectOption: string;
+    index: number;
+}): KnownBlock => ({
     type: 'section',
     text: {
         type: 'mrkdwn',
@@ -70,8 +132,10 @@ export const createVoteModal = (selectOptionList: string[] = []): View => {
                 },
             },
             {
-                dispatch_action: true,
                 type: 'input',
+                block_id: 'add_select_input',
+                dispatch_action: true,
+                optional: true,
                 element: {
                     type: 'plain_text_input',
                     action_id: 'add_selection',
@@ -80,6 +144,7 @@ export const createVoteModal = (selectOptionList: string[] = []): View => {
                         text: '새로운 항목을 기입해주세요.',
                         emoji: true,
                     },
+                    initial_value: '',
                 },
                 label: {
                     type: 'plain_text',
@@ -88,19 +153,14 @@ export const createVoteModal = (selectOptionList: string[] = []): View => {
                 },
             },
             ...selectOptionList.map((selectOption, index) =>
-                createSelectionBlock(selectOption, index),
+                createSelectionBlock({ selectOption, index }),
             ),
             {
                 type: 'input',
                 block_id: 'dueDate',
                 element: {
-                    type: 'datepicker',
-                    initial_date: '2023-12-06',
-                    placeholder: {
-                        type: 'plain_text',
-                        text: '투표 마감 기한',
-                        emoji: true,
-                    },
+                    type: 'datetimepicker',
+                    initial_date_time: Math.floor(Date.now() / 1000),
                     action_id: 'datepicker-action',
                 },
                 label: {
