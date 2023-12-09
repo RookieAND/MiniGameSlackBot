@@ -2,8 +2,8 @@ import { FilterQuery, ProjectionType, QueryOptions } from 'mongoose';
 import { type VoteType } from './schema';
 import db from './schema';
 
-const create = ({ title, userId, options, dueDate }: VoteType) =>
-    db.create({ title, userId, options, dueDate });
+const create = ({ votePostId, votedOptionIndex, userId }: VoteType) =>
+    db.create({ votePostId, votedOptionIndex, userId });
 
 const findOne = (
     query: FilterQuery<VoteType>,
@@ -31,12 +31,20 @@ const updateMany = (
     option?: QueryOptions<VoteType>,
 ) => db.updateMany(filter, { $set: { ...update } }, option);
 
+const deleteOne = (filter: FilterQuery<VoteType>, unset?: Partial<VoteType>) =>
+    db.deleteOne(filter, { $unset: { ...unset } });
+
+const deleteMany = (filter: FilterQuery<VoteType>, unset?: Partial<VoteType>) =>
+    db.deleteOne(filter, { $unset: { ...unset } });
+
 const voteModel = {
     create,
     findOne,
     find,
     updateOne,
     updateMany,
+    deleteOne,
+    deleteMany,
 };
 
 export default voteModel;

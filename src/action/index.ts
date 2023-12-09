@@ -1,6 +1,6 @@
 import { slackBotApp } from '@/app';
 import { createVoteModal, createCompletionBlock } from '@/block';
-import voteModel from '@/database/schema/vote/model';
+import voteModel from '@/database/schema/vote-post/model';
 
 /**
  * 새로운 선택지를 입력했을 경우 발동되는 Action 을 처리하는 함수 handleAddSelectOption

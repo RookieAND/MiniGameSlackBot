@@ -1,51 +1,32 @@
 import { Schema, model } from 'mongoose';
 
-export type VoteOptionType = {
-    /**
-     * 선택지 항목
-     */
-    option: string;
-    /**
-     * 선택지 Index
-     */
-    index: number;
-};
-
-const VoteOptionSchema = new Schema<VoteOptionType>({
-    option: { type: String },
-    index: { type: Number },
-});
-
 export interface VoteType {
     /**
-     * 투표 주제
+     * 투표글 Id
      */
-    title: string;
+    votePostId: string;
     /**
-     * 투표 선택지 목록
-     */
-    options: VoteOptionType[];
-    /**
-     * 투표 마감일
-     */
-    dueDate: Date;
-    /**
-     * 투표 생성 유저 id
+     * 투표를 진행한 유저 Id
      */
     userId: string;
+    /**
+     * 투표를 진행한 선택자 index
+     */
+    votedOptionIndex: number;
 }
 
 const schema = new Schema<VoteType>(
     {
-        title: { type: String, required: true },
-        options: { type: [VoteOptionSchema], required: true },
-        dueDate: { type: Date, required: true },
+        votePostId: { type: String, required: true },
         userId: { type: String, required: true },
+        votedOptionIndex: { type: Number, required: true },
     },
     {
         collection: 'votes',
         timestamps: true,
     },
 );
+
+schema.index({ votePostId: 1, votedOptionIndex: 1 });
 
 export default model<VoteType>('vote', schema);
