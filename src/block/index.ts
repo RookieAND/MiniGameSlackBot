@@ -181,3 +181,75 @@ export const createVoteModal = (selectOptionList: string[] = []): View => {
         private_metadata: privateMetadata,
     };
 };
+
+/**
+ * 투표글 메세지 Block을 생성하는 함수 createVotePostBlock
+ */
+export const createVotePostBlock = ({
+    title,
+    userName,
+    dueDateSecond,
+    selectOptions,
+}: {
+    title: string;
+    userName: string;
+    dueDateSecond: number;
+    selectOptions: string[];
+}): KnownBlock[] => [
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: '📥 새로운 *투표글* 이 생성되었습니다!',
+        },
+    },
+    {
+        type: 'divider',
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `📋 *투표 주제* : ${title}`,
+        },
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `👋 *발의자* : ${userName}`,
+        },
+    },
+    {
+        type: 'section',
+        text: {
+            type: 'mrkdwn',
+            text: `📆 *마감 기한* : ${new Date(dueDateSecond * 1000)
+                .toISOString()
+                .match(/(\d{4}년 \d{2}월 \d{2}일) (\d{2}시 \d{2}분)/)}`,
+        },
+    },
+    {
+        type: 'divider',
+    },
+    {
+        "type": "section",
+        "text": {
+            type: 'mrkdwn',
+            text: '🗳 *선택 항목* :',
+        }
+    },
+    {
+        type: 'actions',
+        elements: selectOptions.map((option, index) => ({
+            type: 'button',
+            text: {
+                type: 'plain_text',
+                text: option,
+                emoji: true,
+            },
+            value: `${index}`,
+            action_id: `vote_option_${index}`,
+        }))
+    },
+];
