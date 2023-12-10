@@ -5,6 +5,7 @@ import {
     handleAddSelectOption,
     handleRemoveSelectOption,
     handleSubmitVoteModal,
+    handleVoteCurrentOption,
 } from '@/action';
 import { registerVoteShortCut } from '@/command';
 import { connectMongoDB } from '@/database/connection';
@@ -24,6 +25,7 @@ const bootstrapSlackBot = async () => {
     handleAddSelectOption();
     handleRemoveSelectOption();
     handleSubmitVoteModal();
+    handleVoteCurrentOption();
     registerVoteShortCut();
 };
 

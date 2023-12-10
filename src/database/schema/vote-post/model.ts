@@ -31,7 +31,7 @@ const updateMany = (
     option?: QueryOptions<VotePostType>,
 ) => db.updateMany(filter, { $set: { ...update } }, option);
 
-const voteModel = {
+const votePostModel = {
     create,
     findOne,
     find,
@@ -39,4 +39,4 @@ const voteModel = {
     updateMany,
 };
 
-export default voteModel;
+export default votePostModel;

@@ -1,4 +1,6 @@
-import { View, KnownBlock, Block } from '@slack/bolt';
+import dayjs from 'dayjs';
+
+import { View, KnownBlock } from '@slack/bolt';
 
 /**
  * 투표글 생성 완료 알림 내용을 담은 Block 을 생성하는 함수 createCompletionBlock
@@ -37,9 +39,9 @@ export const createCompletionBlock = ({
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `📆 *마감 기한* : ${new Date(dueDateSecond * 1000)
-                .toISOString()
-                .match(/(\d{4}년 \d{2}월 \d{2}일) (\d{2}시 \d{2}분)/)}`,
+            text: `📆 *마감 기한* : ${dayjs(dueDateSecond * 1000).format(
+                'YYYY년 MM월 DD일 HH시 mm분',
+            )}`,
         },
     },
     {
@@ -224,32 +226,37 @@ export const createVotePostBlock = ({
         type: 'section',
         text: {
             type: 'mrkdwn',
-            text: `📆 *마감 기한* : ${new Date(dueDateSecond * 1000)
-                .toISOString()
-                .match(/(\d{4}년 \d{2}월 \d{2}일) (\d{2}시 \d{2}분)/)}`,
+            text: `📆 *마감 기한* : ${dayjs(dueDateSecond * 1000).format(
+                'YYYY년 MM월 DD일 HH시 mm분',
+            )}`,
         },
     },
     {
         type: 'divider',
     },
     {
-        "type": "section",
-        "text": {
+        type: 'section',
+        text: {
             type: 'mrkdwn',
             text: '🗳 *선택 항목* :',
-        }
+        },
     },
-    {
-        type: 'actions',
-        elements: selectOptions.map((option, index) => ({
-            type: 'button',
+    ...selectOptions.map(
+        (option, index): KnownBlock => ({
+            type: 'section',
             text: {
-                type: 'plain_text',
-                text: option,
-                emoji: true,
+                type: 'mrkdwn',
+                text: `*${index + 1}.* ${option} (3표)`,
             },
-            value: `${index}`,
-            action_id: `vote_option_${index}`,
-        }))
-    },
+            accessory: {
+                type: 'button',
+                text: {
+                    type: 'plain_text',
+                    text: '투표 진행',
+                },
+                value: `${index}`,
+                action_id: 'vote_option',
+            },
+        }),
+    ),
 ];

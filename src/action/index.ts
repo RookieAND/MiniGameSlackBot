@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { slackBotApp } from '@/app';
 import {
     createVoteModal,
@@ -23,6 +25,12 @@ export const handleAddSelectOption = () => {
                 const prevSelectOptions = privateMetadata
                     ? JSON.parse(body.view.private_metadata)
                     : [];
+
+                if (!action.value) {
+                    await ack();
+                    return;
+                }
+
                 const updatedSelectOption = [
                     ...prevSelectOptions,
                     action.value,
@@ -76,6 +84,27 @@ export const handleRemoveSelectOption = () => {
 };
 
 /**
+ * 투표 옵션 버튼을 클릭했을 때에 대한 block_id 를 처리하는 함수 handleVoteCurrentOption
+ */
+export const handleVoteCurrentOption = () => {
+    slackBotApp.action(
+        'vote_option',
+        async ({ ack, body, client, logger }) => {
+            await ack();
+            try {
+                if (body.type !== 'block_actions' || !body.view) return;
+                if (body.actions[0].type !== 'button') return;
+
+                const currentVotedOption = body.actions[0].value;
+                console.log(currentVotedOption);
+            } catch (error) {
+                logger.error(error);
+            }
+        },
+    );
+};
+
+/**
  * 투표글 생성에 필요한 정보를 기입한 후, 모달을 닫는 view 를 처리하는 함수 handleSubmitVoteModal
  */
 export const handleSubmitVoteModal = () => {
@@ -115,8 +144,8 @@ export const handleSubmitVoteModal = () => {
                     });
                     return;
                 }
-                
-                if (dueDateSecond * 1000 < Date.now()) {
+
+                if (dayjs(dueDateSecond * 1000).isBefore(Date.now())) {
                     await ack({
                         response_action: 'errors',
                         errors: {

@@ -5,6 +5,9 @@ import db from './schema';
 const create = ({ votePostId, votedOptionIndex, userId }: VoteType) =>
     db.create({ votePostId, votedOptionIndex, userId });
 
+const countDocuments = (query: FilterQuery<VoteType>) =>
+    db.countDocuments(query).lean().exec();
+
 const findOne = (
     query: FilterQuery<VoteType>,
     projection?: ProjectionType<VoteType>,
@@ -39,6 +42,7 @@ const deleteMany = (filter: FilterQuery<VoteType>, unset?: Partial<VoteType>) =>
 
 const voteModel = {
     create,
+    countDocuments,
     findOne,
     find,
     updateOne,
